@@ -7,5 +7,4 @@ RUN [ "chmod", "+x", "./setup.sh" ]
 
 RUN npm install
 
-# TODO: change this for arg start
 ENTRYPOINT [ "./setup.sh", "npm" , "run", "dstart"]
