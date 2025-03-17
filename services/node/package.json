@@ -1,0 +1,19 @@
+{
+  "name": "kamaguru",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.mjs",
+  "scripts": {
+    "dstart": "nodemon b/server.mjs",
+    "start": "node b/server.mjs"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  },
+  "dependencies": {
+    "pg": "^8.13.3",
+    "nodemailer": "^6.10.0"
+  }
+}
