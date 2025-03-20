@@ -1,36 +1,21 @@
-import { createServer } from 'node:http';
+import express from "express";
 
-const hostname = "0.0.0.0";
-const port = 6900;
+const app = express();
 
-const ctype = "application/json";
+app.use(express.json({limit: "10000kb"}))
+app.get("/", (req, res) => {
+	res.json("success: hello");
+	res.end()
+})
+app.get("/api/a/", (req, res) => {
+	res.json("success: hello");
+})
 
-async function serverEntrys(req, res)
-{
-	res.setHeader("Content-Type", ctype);
-	res.statusCode = 200;
-	res.on("error", console.error);
-	res.end(JSON.stringify(`hello boders`));
-}
+const HOSTNAME = "0.0.0.0";
+const PORT = 6900;
 
-async function main()
-{
-	try
-	{
-		process.once("SIGTERM", async (signalCode) => {
-			await client.end();
-			process.exit(0);
-		})
-	}
-	catch (err)
-	{
+app.listen(PORT, HOSTNAME, (err) => {
+	if (err)
 		console.error(err);
-	}
-
-	const server = createServer(serverEntrys);
-	server.listen(port, hostname, () => {
-		console.log(`Server running at http://${hostname}:${port}/`);
-	});
-}
-
-main();
+	console.log(`server starting to http://${HOSTNAME}:${PORT}/`);
+});
