@@ -4,16 +4,19 @@
   "description": "",
   "main": "server.mjs",
   "scripts": {
-    "dstart": "nodemon b/server.mjs",
-    "start": "node b/server.mjs"
+    "dstart": "nodemon server.mjs",
+    "start": "node server.mjs",
+	"init_prisma": "prisma init --datasource-provider posgresql"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "prisma": "^6.5.0"
   },
   "dependencies": {
     "express": "^4.21.2",
+    "nodemailer": "^6.10.0",
     "pg": "^8.13.3"
   }
 }

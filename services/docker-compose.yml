@@ -12,13 +12,13 @@ services:
     restart: on-failure
   node:
     build: ./node
-    container_name: node 
+    container_name: node
     networks:
       - celchannel
       - db
     image: node
     volumes:
-      - backend:/app/b:ro
+      - backend:/app
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
