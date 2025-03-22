@@ -11,7 +11,11 @@ services:
       - website_nginx:/home/www:ro
     restart: on-failure
   node:
-    build: ./node
+    build:
+      context: ./node
+      args:
+        - UID=${UID}
+        - GID=${GID}
     container_name: node
     networks:
       - celchannel

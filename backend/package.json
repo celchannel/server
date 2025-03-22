@@ -6,7 +6,7 @@
   "scripts": {
     "dstart": "nodemon server.mjs",
     "start": "node server.mjs",
-	"init_prisma": "prisma init --datasource-provider posgresql"
+	"init_prisma": "prisma init --datasource-provider postgresql"
   },
   "author": "",
   "license": "ISC",

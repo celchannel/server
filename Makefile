@@ -9,11 +9,11 @@ all: $(NAME)
 $(NAME): build up
 
 up:
-	docker compose -f $(PATH_COMPOSE) up --detach
+	UID=$$(id -u) GID=$$(id -g) docker compose -f $(PATH_COMPOSE) up --detach
 
 build:
 	mkdir -p $(VOLUME_PATH_MAIN) $(VOLUMES_PATH)
-	docker compose -f $(PATH_COMPOSE) build
+	UID=$$(id -u) GID=$$(id -g) docker compose -f $(PATH_COMPOSE) build
 
 stop:
 	docker compose -f $(PATH_COMPOSE) stop
