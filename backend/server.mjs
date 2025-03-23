@@ -1,6 +1,8 @@
-import express from "express";
+import express, { json } from "express";
 import { getJwt, hashKey } from "./crypt.mjs";
 import { PrismaClient } from "@prisma/client";
+import { STATUS } from "./utils.mjs";
+import { Checker } from "./checker.mjs";
 
 const HOSTNAME = "0.0.0.0";
 const PORT = 6900;
@@ -22,6 +24,22 @@ app.get("/api/hello/", (req, res) => {
 
 // TODO check data for sql request and verify content
 app.post("/api/createaccount/", async (req, res) => {
+	try
+	{
+		const username = req.body.username;
+		const password = req.body.password;
+		if (!username || !password)
+			throw "Pseudo and password is needed";
+		Checker.username(username);
+		Checker.password(password);
+		
+
+	}
+	catch (err)
+	{
+		res.status(STATUS.bad_request).json({error: err});
+		return ;
+	}
 	console.log("username:", req.body.username);
 	console.log("password", hashKey(req.body.password));
 	try
