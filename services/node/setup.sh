@@ -17,6 +17,8 @@ while ! nc -z postgresql 5432; do
     sleep 0.1
 done
 
+npm run push_db
+
 echo start nodejs
 
 exec "$@"
