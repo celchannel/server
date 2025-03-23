@@ -30,7 +30,7 @@ services:
       - NODE_ENC_PASS=${NODE_ENC_PASS}
     restart: on-failure
     ports:
-      - "5555:5555"
+      - "5555:5555" # TODO DELETE THIS
   postgresql:
     container_name: postgresql
     image: postgres:17.0-alpine3.19
