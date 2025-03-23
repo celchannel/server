@@ -6,7 +6,8 @@
   "scripts": {
     "dstart": "nodemon server.mjs",
     "start": "node server.mjs",
-	"init_prisma": "prisma init --datasource-provider postgresql"
+    "init_prisma": "prisma init --datasource-provider postgresql",
+	"push_db": "prisma db push"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +16,7 @@
     "prisma": "^6.5.0"
   },
   "dependencies": {
+    "@prisma/client": "^6.5.0",
     "express": "^4.21.2",
     "nodemailer": "^6.10.0",
     "pg": "^8.13.3"
