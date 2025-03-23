@@ -1,5 +1,5 @@
 import express from "express";
-import { hashKey } from "./crypt.mjs";
+import { getJwt, hashKey } from "./crypt.mjs";
 import { PrismaClient } from "@prisma/client";
 
 const HOSTNAME = "0.0.0.0";
@@ -30,7 +30,7 @@ app.post("/api/createaccount/", async (req, res) => {
 			data: {
 				name: req.body.username,
 				password: hashKey(req.body.password),
-				token: "test" + Date.now()
+				token: await getJwt(req.body.username)
 			}
 		});
 		console.log("user create:", user);

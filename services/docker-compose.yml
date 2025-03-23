@@ -28,6 +28,7 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
       - NODE_ENC_PASS=${NODE_ENC_PASS}
+      - NODE_JWT=${NODE_JWT}
     restart: on-failure
     ports:
       - "5555:5555" # TODO DELETE THIS
