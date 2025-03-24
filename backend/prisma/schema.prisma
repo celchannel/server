@@ -20,6 +20,19 @@ model User {
   token    String   @unique
   tm       DateTime @default(now())
   rank     RANK     @default(USER)
+  deaths   Death[]
+}
+
+model Death {
+  id          Int     @id @default(autoincrement())
+  AreaSID     Int
+  LevelName   String
+  Side		  String
+  GoldenBerry Boolean
+  PositionX	  Float
+  PositionY	  Float
+  AuthorId    Int
+  Author      User    @relation(fields: [AuthorId], references: [id])
 }
 
 enum RANK {
