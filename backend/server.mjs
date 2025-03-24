@@ -1,13 +1,10 @@
 import express, { json } from "express";
 import { getJwt, hashKey } from "./crypt.mjs";
-import { PrismaClient } from "@prisma/client";
 import { STATUS } from "./utils.mjs";
 import { Checker } from "./checker.mjs";
 
 const HOSTNAME = "0.0.0.0";
 const PORT = 6900;
-
-const db = new PrismaClient();
 
 const app = express();
 
@@ -32,32 +29,44 @@ app.post("/api/createaccount/", async (req, res) => {
 			throw "Pseudo and password is needed";
 		Checker.username(username);
 		Checker.password(password);
-		
-
+		await Checker.duplicateUsername(username);
+		const token = await getJwt(username); // TODO check if throw error return an ise
+		await Checker.duplicateToken(token);
 	}
 	catch (err)
 	{
 		res.status(STATUS.bad_request).json({error: err});
 		return ;
 	}
-	console.log("username:", req.body.username);
-	console.log("password", hashKey(req.body.password));
-	try
-	{
-		const user = await db.user.create({
-			data: {
-				name: req.body.username,
-				password: hashKey(req.body.password),
-				token: await getJwt(req.body.username)
-			}
-		});
-		console.log("user create:", user);
-	}
-	catch (err)
-	{
-		console.error(err);
-	}
-	res.json("success: info registered");
+	//try
+	//{
+	//	res.json({success: "nice date"});
+	//}
+	//catch (err)
+	//{
+	//	console.error(err);
+	//	res.status(STATUS.ise).json({error: "Internal Server Error"}); // TODO log data more information (fonction use and other)
+	//}
+
+	//console.log("username:", req.body.username);
+	//console.log("password", hashKey(req.body.password));
+	//try
+	//{
+	//	const user = await db.user.create({
+	//		data: {
+	//			name: req.body.username,
+	//			password: hashKey(req.body.password),
+	//			token: await getJwt(req.body.username)
+	//		}
+	//	});
+	//	console.log("user create:", user);
+	//}
+	//catch (err)
+	//{
+	//	console.error(err);
+	//}
+
+	res.json({success: "nice date"});
 });
 
 app.listen(PORT, HOSTNAME, (err) => {
