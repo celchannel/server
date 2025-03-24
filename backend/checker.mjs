@@ -25,7 +25,7 @@ export class Checker {
 	static password(str)
 	{
 		if (typeof str != "string")
-			throw "The username must be a sting";
+			throw "The password must be a sting";
 		if (!(str && str.length >= 5 && str.length <= 250))
 			throw "The username must be between 5 and 250 characters long";
 	}
