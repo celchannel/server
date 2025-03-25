@@ -83,7 +83,7 @@ app.post("/api/death/", async (req, res) => {
 	{
 		const { AreaSID, LevelName, Side, GoldenBerry, PositionX, PositionY } = req.body;
 		const token = getHeaderToken(req);
-		if (!AreaSID || !LevelName || !Side || !GoldenBerry || !PositionX || !PositionY)
+		if (!AreaSID || !LevelName || !Side)
 			throw "Bad argment: AreaSID, LevelName, Side, GoldenBerry, PositionX, PositionY is needed"
 		Checker.AreaSID(AreaSID);
 		Checker.LevelName(LevelName);

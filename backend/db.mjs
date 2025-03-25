@@ -48,7 +48,7 @@ export class DbPush
 
 	static async Death(AreaSID, LevelName, Side, GoldenBerry, PositionX, PositionY, AuthorId)
 	{
-		if (!AreaSID || !LevelName || !Side || !GoldenBerry || !PositionX || !PositionY || AuthorId)
+		if (!AreaSID || !LevelName || !Side || !AuthorId)
 			throw "Bad arguments";
 		const death = await db.death.create({
 			data:
