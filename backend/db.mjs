@@ -31,17 +31,37 @@ export class DbPush
 	 * @param {String} password
 	 * @param {String} token
 	 */
-	static async newUser(username, password, token)
+	static async User(username, password, token)
 	{
 		if (!username || !password || !token)
 			throw "Bad arguments";
 		const user = await db.user.create({
-			data: {
+			data:
+			{
 				name: username,
 				password: password,
 				token: token
 			}
 		});
 		console.log(user);
+	}
+
+	static async Death(AreaSID, LevelName, Side, GoldenBerry, PositionX, PositionY, AuthorId)
+	{
+		if (!AreaSID || !LevelName || !Side || !GoldenBerry || !PositionX || !PositionY || AuthorId)
+			throw "Bad arguments";
+		const death = await db.death.create({
+			data:
+			{
+				AreaSID: AreaSID,
+				LevelName: LevelName,
+				Side: Side,
+				GoldenBerry: GoldenBerry,
+				PositionX: PositionX,
+				PositionY: PositionY,
+				AuthorId: AuthorId
+			}
+		});
+		console.log(death);
 	}
 }

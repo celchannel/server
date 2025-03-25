@@ -5,6 +5,11 @@ export const STATUS = Object.freeze({
 	ise: 500,
 });
 
+/**
+ *
+ * @param {string} str
+ * @returns {boolean}
+ */
 export function isAlnum(str)
 {
 	// /i ignore case (in this case equale to [a-zA-Z0-9])
@@ -12,4 +17,14 @@ export function isAlnum(str)
 	// + checheck last caracter match with regex
 	// $ check all string to the end
 	return (String(str).match(/^[a-zA-Z0-9_-]+$/g));
+}
+
+/**
+ *
+ * @param {string} str
+ * @returns {boolean}
+ */
+export function isToken(str)
+{
+	return (String(str).match(/^[\w\.-]+$/g));
 }
