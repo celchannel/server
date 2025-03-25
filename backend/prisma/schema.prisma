@@ -24,7 +24,8 @@ model User {
 }
 
 model Death {
-  id          Int     @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
+  tm          DateTime @default(now())
   AreaSID     Int
   LevelName   String
   Side		  String
@@ -32,7 +33,7 @@ model Death {
   PositionX	  Float
   PositionY	  Float
   AuthorId    Int
-  Author      User    @relation(fields: [AuthorId], references: [id])
+  Author      User     @relation(fields: [AuthorId], references: [id])
 }
 
 enum RANK {
