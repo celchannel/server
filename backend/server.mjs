@@ -24,9 +24,8 @@ app.get("/api/hello/", (req, res) => {
 app.post("/api/createaccount/", async (req, res) => {
 	try
 	{
-		const username = req.body.username;
-		const password = req.body.password;
-		if (!username || !password)
+		const { username, password } = req.body;
+		if (Checker.undefined(username, password))
 			throw "Pseudo and password is needed";
 		Checker.username(username);
 		Checker.password(password);
@@ -83,7 +82,7 @@ app.post("/api/death/", async (req, res) => {
 	{
 		const { AreaSID, LevelName, Side, GoldenBerry, PositionX, PositionY } = req.body;
 		const token = getHeaderToken(req);
-		if (!AreaSID || !LevelName || !Side)
+		if (Checker.undefined(AreaSID, LevelName, Side, GoldenBerry, PositionX, PositionY))
 			throw "Bad argment: AreaSID, LevelName, Side, GoldenBerry, PositionX, PositionY is needed"
 		Checker.AreaSID(AreaSID);
 		Checker.LevelName(LevelName);
@@ -97,7 +96,6 @@ app.post("/api/death/", async (req, res) => {
 		try
 		{
 			await DbPush.Death(AreaSID, LevelNameBase64, Side, GoldenBerry, PositionX, PositionY, AuthorId);
-			//await DbPush.newUser(username, hashPassword, token);
 			res.json({success: "Death save"});
 		}
 		catch (err)

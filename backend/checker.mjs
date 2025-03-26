@@ -134,4 +134,14 @@ export class Checker {
 		if (!(str.length >= 1 && str.length <= 500 && isToken(str)))
 			throw "Invalide token";
 	}
+
+	static undefined(...args)
+	{
+		for (const arg of args)
+		{
+			if (arg == undefined)
+				return (true);
+		}
+		return (false);
+	}
 }

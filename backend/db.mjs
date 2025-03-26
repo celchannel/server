@@ -33,8 +33,6 @@ export class DbPush
 	 */
 	static async User(username, password, token)
 	{
-		if (!username || !password || !token)
-			throw "Bad arguments";
 		const user = await db.user.create({
 			data:
 			{
@@ -48,8 +46,6 @@ export class DbPush
 
 	static async Death(AreaSID, LevelName, Side, GoldenBerry, PositionX, PositionY, AuthorId)
 	{
-		if (!AreaSID || !LevelName || !Side || !AuthorId)
-			throw "Bad arguments";
 		const death = await db.death.create({
 			data:
 			{
