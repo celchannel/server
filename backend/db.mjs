@@ -21,6 +21,21 @@ export class DbGet
 			});
 		return (result);
 	}
+
+	static async death(AreaSID, LevelName, Side, howMany) // check if is the last death taken
+	{
+		return (await db.death.findMany({
+			orderBy: {
+				id: "desc"
+			},
+			where: {
+				AreaSID: AreaSID,
+				LevelName: LevelName,
+				Side: Side
+			},
+			take: howMany
+		}));
+	}
 }
 
 export class DbPush
