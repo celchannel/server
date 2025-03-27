@@ -22,7 +22,7 @@ export class DbGet
 		return (result);
 	}
 
-	static async death(AreaSID, LevelName, Side, howMany) // check if is the last death taken
+	static async death(AreaSID, LevelName, Side, howMany)
 	{
 		return (await db.death.findMany({
 			orderBy: {
