@@ -164,8 +164,25 @@ app.get("/api/death/:AreaSID/:LevelName/:Side/", async (req, res) => {
 
 app.get("/api/stat/", async (req, res) => {
 	sendStat(req);
-	console.log(req.route.path, req.originalUrl);
-	res.json(await stat.getAllEntryPoint());
+	try
+	{
+		const token = getHeaderToken(req);
+		Checker.token(token);
+		Checker.userAdmin(await getUserWithToken(token));
+		try
+		{
+			res.json(await stat.getAllEntryPoint());
+		}
+		catch (err)
+		{
+			console.error(err);
+			res.status(STATUS.ise).json({error: "Internal Server Error"}); // TODO log data more information (fonction use and other)
+		}
+	}
+	catch (err)
+	{
+		res.status(STATUS.bad_request).json({error: err});
+	}
 });
 
 app.listen(PORT, HOSTNAME, (err) => {

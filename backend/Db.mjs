@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 
 const db = new PrismaClient();
-
 export class DbGet
 {
 	static async user(obj)

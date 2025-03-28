@@ -144,4 +144,10 @@ export class Checker {
 		}
 		return (false);
 	}
+
+	static userAdmin(user)
+	{
+		if (user.rank != "ADMIN")
+			throw "Admin account is needed";
+	}
 }
