@@ -1,8 +1,9 @@
 import express, { json } from "express";
 import { getJwt, hashKey } from "./crypt.mjs";
 import { STATUS } from "./utils.mjs";
-import { Checker } from "./checker.mjs";
-import { DbGet, DbPush } from "./db.mjs";
+import { Checker } from "./Checker.mjs";
+import { DbGet, DbPush } from "./Db.mjs";
+import { stat } from "./Stat.mjs"
 
 const HOSTNAME = "0.0.0.0";
 const PORT = 6900;
@@ -20,8 +21,14 @@ app.get("/api/hello/", (req, res) => {
 	res.json("success: hello");
 })
 
+async function sendStat(req)
+{
+	stat.sendEntryPoint(req.route.path);
+}
+
 // TODO check data for sql request and verify content
 app.post("/api/createaccount/", async (req, res) => {
+	sendStat(req);
 	try
 	{
 		const { username, password } = req.body;
@@ -78,6 +85,7 @@ async function getUserWithToken(token)
 }
 
 app.post("/api/death/", async (req, res) => {
+	sendStat(req);
 	try
 	{
 		const { AreaSID, LevelName, Side, GoldenBerry, PositionX, PositionY } = req.body;
@@ -114,6 +122,7 @@ app.post("/api/death/", async (req, res) => {
 const MAX_TABLE_LEN = 500;
 
 app.get("/api/death/:AreaSID/:LevelName/:Side/", async (req, res) => {
+	sendStat(req);
 	try
 	{
 		const AreaSID = parseInt(req.params.AreaSID, 10);
@@ -153,6 +162,11 @@ app.get("/api/death/:AreaSID/:LevelName/:Side/", async (req, res) => {
 	}
 });
 
+app.get("/api/stat/", async (req, res) => {
+	sendStat(req);
+	console.log(req.route.path, req.originalUrl);
+	res.json(await stat.getAllEntryPoint());
+});
 
 app.listen(PORT, HOSTNAME, (err) => {
 	if (err)

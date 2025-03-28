@@ -1,4 +1,4 @@
-import { DbGet } from "./db.mjs";
+import { DbGet } from "./Db.mjs";
 import { isAlnum, isToken } from "./utils.mjs";
 
 export class Checker {
