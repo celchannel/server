@@ -114,16 +114,18 @@ app.post("/api/death/", async (req, res) => {
 app.get("/api/death/:AreaSID/:LevelName/:Side/", async (req, res) => {
 	try
 	{
-		const AreaSID = parseInt(req.params.AreaSID);
+		const AreaSID = parseInt(req.params.AreaSID, 10);
 		const { LevelName, Side } = req.params;
 		Checker.AreaSID(AreaSID);
 		Checker.LevelName(LevelName);
 		Checker.Side(Side);
 		const LevelNameBase64 = btoa(LevelName);
 		const USide = Side.toUpperCase();
+		let limits = parseInt(req.query.limits, 10);
+		limits = (limits) ? limits : 500;
 		try
 		{
-			const bigData = await DbGet.death(AreaSID, LevelNameBase64, USide, 500);
+			const bigData = await DbGet.death(AreaSID, LevelNameBase64, USide, limits);
 			const smallData = [];
 			for (const el of bigData)
 			{
