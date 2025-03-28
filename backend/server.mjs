@@ -111,6 +111,8 @@ app.post("/api/death/", async (req, res) => {
 	}
 });
 
+const MAX_TABLE_LEN = 500;
+
 app.get("/api/death/:AreaSID/:LevelName/:Side/", async (req, res) => {
 	try
 	{
@@ -122,7 +124,7 @@ app.get("/api/death/:AreaSID/:LevelName/:Side/", async (req, res) => {
 		const LevelNameBase64 = btoa(LevelName);
 		const USide = Side.toUpperCase();
 		let limits = parseInt(req.query.limits, 10);
-		limits = (limits) ? limits : 500;
+		limits = (limits < MAX_TABLE_LEN) ? limits : MAX_TABLE_LEN;
 		try
 		{
 			const bigData = await DbGet.death(AreaSID, LevelNameBase64, USide, limits);
