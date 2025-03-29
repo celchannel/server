@@ -26,6 +26,28 @@ async function sendStat(req)
 	stat.sendEntryPoint(req.route.path);
 }
 
+// TODO make error class to send error of user to indicate is ISE or bad request........
+
+/**
+ *
+ * @param {string} username
+ */
+async function getUserWithUsername(username)
+{
+	try
+	{
+		const user = await DbGet.user({username: username})
+		if (user == null)
+			throw null; // TODO change this comportement to indicate ISE
+		return (user);
+	}
+	catch (err)
+	{
+		console.log(err);
+		throw "Username invalide";
+	}
+}
+
 // TODO check data for sql request and verify content
 app.post("/api/createaccount/", async (req, res) => {
 	sendStat(req);
@@ -50,6 +72,24 @@ app.post("/api/createaccount/", async (req, res) => {
 			console.error(err);
 			res.status(STATUS.ise).json({error: "Internal Server Error"}); // TODO log data more information (fonction use and other)
 		}
+	}
+	catch (err)
+	{
+		res.status(STATUS.bad_request).json({error: err});
+	}
+});
+
+app.post("/api/login/", async (req, res) => {
+	sendStat(req);
+	try
+	{
+		const { username, password } = req.body;
+		if (Checker.undefined(username, password))
+			throw "Pseudo and password is needed";
+		Checker.username(username);
+		Checker.password(password);
+		const user = await getUserWithUsername(username);
+		res.json({success: "Account found", AccessToken: user.token});
 	}
 	catch (err)
 	{
