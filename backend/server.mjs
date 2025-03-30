@@ -45,7 +45,7 @@ app.post("/api/createaccount/", async (req, res) => {
 	{
 		const { username, password } = req.body;
 		if (Checker.undefined(username, password))
-			throw "Pseudo and password is needed";
+			throw new SEBadRequest("Pseudo and password is needed");
 		Checker.username(username);
 		Checker.password(password);
 		const hashPassword = hashKey(password);
@@ -70,7 +70,7 @@ app.post("/api/login/", async (req, res) => {
 	{
 		const { username, password } = req.body;
 		if (Checker.undefined(username, password))
-			throw "Pseudo and password is needed";
+			throw new SEBadRequest("Pseudo and password is needed");
 		Checker.username(username);
 		Checker.password(password);
 		const user = await getUserWithUsername(username);
@@ -86,17 +86,17 @@ function getHeaderToken(req)
 {
 	const authorization = req.header("Authorization");
 	if (!authorization)
-		throw "the token is needed";
+		throw new SEBadRequest("the token is needed");
 	const tab = authorization.split(" ");
 	if (tab.length != 2 || tab[0] != "Bearer")
-		throw "Authorization header bad format (Authorization: Bearer YOURTOKEN)"
+		throw new SEBadRequest("Authorization header bad format (Authorization: Bearer YOURTOKEN)");
 	return (tab[1]);
 }
 
 async function getUserWithToken(token)
 {
 	const user = await DbGet.user({token: token});
-	if (!user)
+	if (user == null)
 		throw new SEBadRequest("Invalide token");
 	return (user);
 }
@@ -108,7 +108,7 @@ app.post("/api/death/", async (req, res) => {
 		const { AreaSID, LevelName, Side, GoldenBerry, PositionX, PositionY } = req.body;
 		const token = getHeaderToken(req);
 		if (Checker.undefined(AreaSID, LevelName, Side, GoldenBerry, PositionX, PositionY))
-			throw "Bad argment: AreaSID, LevelName, Side, GoldenBerry, PositionX, PositionY is needed"
+			throw new SEBadRequest("Bad argment: AreaSID, LevelName, Side, GoldenBerry, PositionX, PositionY is needed");
 		Checker.AreaSID(AreaSID);
 		Checker.LevelName(LevelName);
 		Checker.Side(Side);
