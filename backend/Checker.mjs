@@ -1,4 +1,5 @@
 import { DbGet } from "./Db.mjs";
+import { SEBadRequest } from "./Error.mjs";
 import { isAlnum, isToken } from "./utils.mjs";
 
 export class Checker {
@@ -6,13 +7,13 @@ export class Checker {
 	static Tstring(any, arg)
 	{
 		if (typeof any != "string")
-			throw `The ${arg} must be a string`;
+			throw new SEBadRequest(`The ${arg} must be a string`);
 	}
 
 	static Tnumber(any, arg)
 	{
 		if (typeof any != "number")
-			throw `The ${arg} must be a number`;
+			throw new SEBadRequest(`The ${arg} must be a number`);
 	}
 
 	/**
@@ -22,9 +23,9 @@ export class Checker {
 	static username(str)
 	{
 		if (typeof str != "string")
-			throw "The username must be a string";
+			throw new SEBadRequest ("The username must be a string");
 		if (!(str && str.length >= 3 && str.length <= 40 && isAlnum(str)))
-			throw "The username must be between 3 and 20 characters long and must be composed exclusively of letters and numbers, with the exception of the following characters: _-";
+			throw new SEBadRequest ("The username must be between 3 and 20 characters long and must be composed exclusively of letters and numbers, with the exception of the following characters: _-");
 	}
 
 	/**
@@ -34,9 +35,9 @@ export class Checker {
 	static password(str)
 	{
 		if (typeof str != "string")
-			throw "The password must be a sting";
+			throw new SEBadRequest("The password must be a sting");
 		if (!(str && str.length >= 5 && str.length <= 250))
-			throw "The username must be between 5 and 250 characters long";
+			throw new SEBadRequest("The username must be between 5 and 250 characters long");
 	}
 
 	/**
@@ -82,7 +83,7 @@ export class Checker {
 	{
 		this.Tnumber(nbr, "AreaSID");
 		if (!(nbr >= 0 && nbr <= 9))
-			throw "AreaSID must be between 0 and 9";
+			throw new SEBadRequest("AreaSID must be between 0 and 9");
 	}
 
 	/**
@@ -93,7 +94,7 @@ export class Checker {
 	{
 		this.Tstring(str, "LevelName");
 		if (!(str.length >= 1 && str.length <= 100))
-			throw "LevelName must be between 1 and 100 characters";
+			throw new SEBadRequest("LevelName must be between 1 and 100 characters");
 	}
 
 	/**
@@ -105,7 +106,7 @@ export class Checker {
 		this.Tstring(str, "Side");
 		str = str.toUpperCase();
 		if (!(str.length == 1 && (str == 'A' || str == 'B' || str == 'C')))
-			throw "LevelName must be a characters (a | A | b | B | c | C)";
+			throw new SEBadRequest("LevelName must be a characters (a | A | b | B | c | C)");
 	}
 
 	/**
@@ -115,7 +116,7 @@ export class Checker {
 	static GoldenBerry(bool)
 	{
 		if (typeof bool != "boolean")
-			throw "GoldenBerry must be a boolean";
+			throw new SEBadRequest("GoldenBerry must be a boolean");
 	}
 
 	/**
@@ -132,7 +133,7 @@ export class Checker {
 	{
 		this.Tstring(str, "token");
 		if (!(str.length >= 1 && str.length <= 500 && isToken(str)))
-			throw "Invalide token";
+			throw new SEBadRequest("Invalide token");
 	}
 
 	static undefined(...args)
@@ -148,6 +149,6 @@ export class Checker {
 	static userAdmin(user)
 	{
 		if (user.rank != "ADMIN")
-			throw "Admin account is needed";
+			throw new SEBadRequest("Admin account is needed");
 	}
 }

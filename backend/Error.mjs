@@ -14,7 +14,7 @@ class ServerError
 	}
 }
 
-class SEISE extends ServerError
+export class SEISE extends ServerError
 {
 	constructor ()
 	{
@@ -22,7 +22,7 @@ class SEISE extends ServerError
 	}
 }
 
-class SEBadRequest extends ServerError
+export class SEBadRequest extends ServerError
 {
 	constructor (error)
 	{
