@@ -47,15 +47,8 @@ export class Checker {
 	 */
 	static async duplicateUsername(str)
 	{
-		try
-		{
-			if (await DbGet.user({username: str}))
-				throw null;
-		}
-		catch (err)
-		{
-			throw "The pseudo is already in use, change the pseudo";
-		}
+		if (await DbGet.user({username: str}))
+			throw new SEBadRequest("The pseudo is already in use, change the pseudo");
 	}
 
 	/**
@@ -65,16 +58,10 @@ export class Checker {
 	 */
 	static async duplicateToken(str)
 	{
-		try
-		{
-			if (await DbGet.user({token: str}))
-				throw null;
-		}
-		catch (err)
-		{
-			throw "Wait what bro 🗿🗿🗿";
-		}
+		if (await DbGet.user({token: str}))
+			throw new SEBadRequest("Wait what bro 🗿🗿🗿");
 	}
+
 	/**
 	 *
 	 * @param {number} nbr
