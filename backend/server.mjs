@@ -1,9 +1,9 @@
 import express, { json } from "express";
 import { getJwt, hashKey } from "./crypt.mjs";
-import { STATUS } from "./utils.mjs";
 import { Checker } from "./Checker.mjs";
 import { DbGet, DbPush } from "./Db.mjs";
 import { stat } from "./Stat.mjs"
+import { SEBadRequest } from "./Error.mjs";
 
 const HOSTNAME = "0.0.0.0";
 const PORT = 6900;
@@ -32,18 +32,10 @@ async function sendStat(req)
  */
 async function getUserWithUsername(username)
 {
-	try
-	{
-		const user = await DbGet.user({username: username})
-		if (user == null)
-			throw null; // TODO change this comportement to indicate ISE
-		return (user);
-	}
-	catch (err)
-	{
-		console.log(err);
-		throw "Username invalide";
-	}
+	const user = await DbGet.user({username: username})
+	if (user == null)
+		throw new SEBadRequest("Username invalide");
+	return (user);
 }
 
 // TODO check data for sql request and verify content
@@ -103,18 +95,10 @@ function getHeaderToken(req)
 
 async function getUserWithToken(token)
 {
-	try
-	{
-		const user = await DbGet.user({token: token});
-		if (!user)
-			throw null;
-		return (user);
-	}
-	catch (err)
-	{
-		console.log(err);
-		throw "Invalide token";
-	}
+	const user = await DbGet.user({token: token});
+	if (!user)
+		throw new SEBadRequest("Invalide token");
+	return (user);
 }
 
 app.post("/api/death/", async (req, res) => {
