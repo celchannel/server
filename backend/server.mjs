@@ -26,8 +26,6 @@ async function sendStat(req)
 	stat.sendEntryPoint(req.route.path);
 }
 
-// TODO make error class to send error of user to indicate is ISE or bad request........
-
 /**
  *
  * @param {string} username
@@ -60,24 +58,19 @@ app.post("/api/createaccount/", async (req, res) => {
 		Checker.password(password);
 		const hashPassword = hashKey(password);
 		await Checker.duplicateUsername(username);
-		const token = await getJwt(username); // TODO check if throw error return an ise
+		const token = await getJwt(username);
 		await Checker.duplicateToken(token);
-		try
-		{
-			await DbPush.User(username, hashPassword, token);
-			res.json({success: "Account create", AccessToken: token});
-		}
-		catch (err)
-		{
-			console.error(err);
-			res.status(STATUS.ise).json({error: "Internal Server Error"}); // TODO log data more information (fonction use and other)
-		}
+		await DbPush.User(username, hashPassword, token);
+		res.json({success: "Account create", AccessToken: token});
 	}
 	catch (err)
 	{
-		res.status(STATUS.bad_request).json({error: err});
+		err.exec(res);
 	}
 });
+
+// TODO base function
+
 
 app.post("/api/login/", async (req, res) => {
 	sendStat(req);
@@ -93,7 +86,7 @@ app.post("/api/login/", async (req, res) => {
 	}
 	catch (err)
 	{
-		res.status(STATUS.bad_request).json({error: err});
+		err.exec(res);
 	}
 });
 
@@ -142,20 +135,12 @@ app.post("/api/death/", async (req, res) => {
 		const AuthorId = (await getUserWithToken(token)).id;
 		const LevelNameBase64 = btoa(LevelName);
 		const USide = Side.toUpperCase();
-		try
-		{
-			await DbPush.Death(AreaSID, LevelNameBase64, USide, GoldenBerry, PositionX, PositionY, AuthorId);
-			res.json({success: "Death save"});
-		}
-		catch (err)
-		{
-			console.error(err);
-			res.status(STATUS.ise).json({error: "Internal Server Error"}); // TODO log data more information (fonction use and other)
-		}
+		await DbPush.Death(AreaSID, LevelNameBase64, USide, GoldenBerry, PositionX, PositionY, AuthorId);
+		res.json({success: "Death save"});
 	}
 	catch (err)
 	{
-		res.status(STATUS.bad_request).json({error: err});
+		err.exec(res);
 	}
 });
 
@@ -174,31 +159,23 @@ app.get("/api/death/:AreaSID/:LevelName/:Side/", async (req, res) => {
 		const USide = Side.toUpperCase();
 		let limits = parseInt(req.query.limits, 10);
 		limits = (limits < MAX_TABLE_LEN) ? limits : MAX_TABLE_LEN;
-		try
+		const bigData = await DbGet.death(AreaSID, LevelNameBase64, USide, limits);
+		const smallData = [];
+		for (const el of bigData)
 		{
-			const bigData = await DbGet.death(AreaSID, LevelNameBase64, USide, limits);
-			const smallData = [];
-			for (const el of bigData)
-			{
-				smallData.push({
-					PositionX: el.PositionX,
-					PositionY: el.PositionY,
-					GoldenBerry: el.GoldenBerry,
-					AuthorId: el.AuthorId,
-					Timestamp: el.tm
-				});
-			}
-			res.json({success: "Data get", data:smallData});
+			smallData.push({
+				PositionX: el.PositionX,
+				PositionY: el.PositionY,
+				GoldenBerry: el.GoldenBerry,
+				AuthorId: el.AuthorId,
+				Timestamp: el.tm
+			});
 		}
-		catch (err)
-		{
-			console.error(err);
-			res.status(STATUS.ise).json({error: "Internal Server Error"}); // TODO log data more information (fonction use and other)
-		}
+		res.json({success: "Data get", data:smallData});
 	}
 	catch (err)
 	{
-		res.status(STATUS.bad_request).json({error: err});
+		err.exec(res);
 	}
 });
 
@@ -209,19 +186,11 @@ app.get("/api/stat/", async (req, res) => {
 		const token = getHeaderToken(req);
 		Checker.token(token);
 		Checker.userAdmin(await getUserWithToken(token));
-		try
-		{
-			res.json(await stat.getAllEntryPoint());
-		}
-		catch (err)
-		{
-			console.error(err);
-			res.status(STATUS.ise).json({error: "Internal Server Error"}); // TODO log data more information (fonction use and other)
-		}
+		res.json(await stat.getAllEntryPoint());
 	}
 	catch (err)
 	{
-		res.status(STATUS.bad_request).json({error: err});
+		err.exec(res);
 	}
 });
 

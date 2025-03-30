@@ -1,6 +1,7 @@
 import { EncryptJWT, SignJWT } from "jose";
 import { createHmac, randomUUID } from "node:crypto"
 import { TextEncoder } from "node:util";
+import { SEISE } from "./Error.mjs";
 
 const secret = new TextEncoder().encode(process.env.NODE_JWT); // To convert in Uint8Array
 
@@ -11,10 +12,18 @@ const secret = new TextEncoder().encode(process.env.NODE_JWT); // To convert in 
  */
 export async function getJwt(str)
 {
-	return (await new SignJWT({ "name": str, time: Date.now() })
-			.setProtectedHeader({ alg: "HS256" })
-			.setIssuedAt()
-			.sign(secret));
+	try
+	{
+		return (await new SignJWT({ "name": str, time: Date.now() })
+				.setProtectedHeader({ alg: "HS256" })
+				.setIssuedAt()
+				.sign(secret));
+	}
+	catch (err)
+	{
+		console.log(err);
+		throw new SEISE();
+	}
 }
 
 /**
