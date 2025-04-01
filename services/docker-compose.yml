@@ -14,8 +14,8 @@ services:
     build:
       context: ./node
       args:
-        - UID=${UID}
-        - GID=${GID}
+        - UID=${USERID}
+        - GID=${GROUPID}
     container_name: node
     networks:
       - celchannel
